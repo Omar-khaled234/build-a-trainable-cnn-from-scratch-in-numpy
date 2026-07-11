@@ -114,8 +114,9 @@ def im2col(images, kernel_h, kernel_w, stride, padding):
     N , C , H , W = images.shape
     padded = pad_2d(images , padding)
     N, C, H_pad, W_pad = padded.shape
-    out_h = output_spatial_size( H_pad , kernel_h , stride , padding)
-    out_w = output_spatial_size(W_pad , kernel_w , stride , padding)
+    out_h = output_spatial_size( H, kernel_h , stride , padding)
+    out_w = output_spatial_size(W , kernel_w , stride , padding)
+ 
      # initialize the output matrix
     matrix = np.zeros((out_w * out_h * N , kernel_h * kernel_w * C) , dtype = int)
     # loop through each image
@@ -140,6 +141,9 @@ def im2col(images, kernel_h, kernel_w, stride, padding):
                 # Place flattened patch into output matrix
                 matrix[row_idx, :] = patch_flat
     return matrix
+    
+x = np.array([[[[1, 2], [3, 4]]]])
+print(im2col(x, 2, 2, 1, 1).tolist())
 
 # Step 16 - col2im (not yet solved)
 # TODO: implement
