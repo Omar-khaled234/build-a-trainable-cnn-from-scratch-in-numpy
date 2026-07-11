@@ -113,7 +113,6 @@ def im2col(images, kernel_h, kernel_w, stride, padding):
     # TODO: Unroll overlapping patches of a 4D image tensor into a 2D column matrix.
     N , C , H , W = images.shape
     padded = pad_2d(images , padding)
-    N, C, H_pad, W_pad = padded.shape
     out_h = output_spatial_size( H, kernel_h , stride , padding)
     out_w = output_spatial_size(W , kernel_w , stride , padding)
  
