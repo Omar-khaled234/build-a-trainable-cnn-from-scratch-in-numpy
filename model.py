@@ -106,10 +106,40 @@ def pad_2d(images, pad):
 def output_spatial_size(input_size, kernel, stride, padding):
     # TODO: return the conv/pool output spatial dimension from input_size, kernel, stride, padding
 
-    return int((input_size + 2*padding - kernel)/stride +1)
+    return (input_size - kernel + 2 * padding) // stride + 1
 
-# Step 15 - im2col (not yet solved)
-# TODO: implement
+# Step 15 - im2col
+def im2col(images, kernel_h, kernel_w, stride, padding):
+    # TODO: Unroll overlapping patches of a 4D image tensor into a 2D column matrix.
+    N , C , H , W = images.shape
+    padded = pad_2d(images , padding)
+    N, C, H_pad, W_pad = padded.shape
+    out_h = output_spatial_size( H_pad , kernel_h , stride , padding)
+    out_w = output_spatial_size(W_pad , kernel_w , stride , padding)
+     # initialize the output matrix
+    matrix = np.zeros((out_w * out_h * N , kernel_h * kernel_w * C) , dtype = int)
+    # loop through each image
+    for n in range(N):
+    # Loop through each output position
+        for h in range(out_h):
+            for w in range(out_w):
+                # Calculate patch start positions
+                h_start = h * stride
+                w_start = w * stride
+                
+                # Extract patch
+                patch = padded[n, :, h_start:h_start+kernel_h, w_start:w_start+kernel_w]
+                
+                # Flatten patch in channel-major order
+                # Reshape to (C, kernel_h*kernel_w) then flatten
+                patch_flat = patch.reshape(C, -1).flatten()
+                
+                # Calculate row index in output matrix
+                row_idx = n * out_h * out_w + h * out_w + w
+                
+                # Place flattened patch into output matrix
+                matrix[row_idx, :] = patch_flat
+    return matrix
 
 # Step 16 - col2im (not yet solved)
 # TODO: implement
