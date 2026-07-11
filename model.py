@@ -68,8 +68,12 @@ def accuracy(logits_or_probs, labels):
     correct = (predictions == labels)
     return np.mean(correct)
 
-# Step 10 - he_std (not yet solved)
-# TODO: implement
+# Step 10 - he_std
+import math
+def he_std(fan_in):
+    # TODO: return the He initialization standard deviation sqrt(2 / fan_in).
+    std = math.sqrt(2 / fan_in)
+    return std
 
 # Step 11 - he_init (not yet solved)
 # TODO: implement
